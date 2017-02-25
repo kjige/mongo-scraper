@@ -1,6 +1,7 @@
 var request = require("request");
 var cheerio = require("cheerio");
 var Article = require("../models/Article.js");
+var Note = require("../models/Note.js");
 
 module.exports = function(app) {
     
@@ -73,5 +74,39 @@ module.exports = function(app) {
 
             res.render("saved", {articles: savedArticles}); 
         });
+    });
+
+    app.get("/notes/:id", function(req,res){
+
+        Article.findOne({ "_id": req.params.id })
+
+        // now, execute our query
+        .exec(function(error, doc) {
+            
+            // Log any errors
+            if (error) {console.log(error);}
+            
+            // Otherwise, send the doc to the browser as a json object
+            else {res.send(doc);}
+        });
+    });
+
+    app.post("/notes/:id", function(req,res){
+
+        console.log("NEWNOTE"+req.body.notesBody);
+            
+            // Note.create({ "noteBody": req.body.notesBody}, function(err, note) {
+
+            //     if (err) {console.log(err);} 
+            //     else {
+            
+                    Article.findOneAndUpdate({"_id": req.params.id}, { $push: { 'notes': req.body.notesBody } }, function(error) {
+                        
+                        if (error) {console.log(error);} 
+                        else {res.send(true);}
+
+                    });
+                // }
+            // });
     });
 }

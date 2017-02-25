@@ -2,11 +2,11 @@ var mongoose = require("mongoose");
 
 var Schema = mongoose.Schema;
 
-var NotesSchema = new Schema({
-    notesBody: String,
-    notesDate: {type: Date, default: Date.now}
+var NoteSchema = new Schema({
+    noteBody: String
+    // noteDate: {type: Date, default: Date.now}
 });
 
-var Notes = mongoose.model('Notes', NotesSchema);
+var Note = mongoose.model('Notes', NoteSchema);
 
-module.exports = Notes;
+module.exports = Note;

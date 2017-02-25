@@ -22,7 +22,7 @@ var PORT = process.env.PORT || 3000;
 app.use(logger("dev"));
 
 // public
-app.use(express.static('/public'));
+app.use(express.static(__dirname + '/public'));
 
 // body-parser
 app.use(bodyParser.json());
