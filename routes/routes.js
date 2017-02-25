@@ -92,15 +92,12 @@ module.exports = function(app) {
     });
 
     app.post("/notes/:id", function(req,res){
-
-        console.log("NEWNOTE"+req.body.notesBody);
             
-            // Note.create({ "noteBody": req.body.notesBody}, function(err, note) {
-
-            //     if (err) {console.log(err);} 
-            //     else {
-            
-                    Article.findOneAndUpdate({"_id": req.params.id}, { $push: { 'notes': req.body.notesBody } }, function(error) {
+                    Article.findOneAndUpdate({"_id": req.params.id}, 
+                        
+                        { $push: { 'notes': req.body.notesBody } }, 
+                        
+                        function(error) {
                         
                         if (error) {console.log(error);} 
                         else {res.send(true);}
@@ -108,5 +105,25 @@ module.exports = function(app) {
                     });
                 // }
             // });
+    });
+
+    app.put("/saved/remove/:id", function(req,res){
+
+        Article.remove({"_id":req.params.id}, function(err,dbRes){
+            
+            if (err) { res.send(err); }
+            else { res.send(true); }
+
+        });
+    });
+
+    app.put("/note/remove/:id/:note", function(req,res){
+        console.log("COMMENT "+req.params.note);
+        Article.update({"_id":req.params.id}, {$pull: {'notes': {$in: [req.params.note]}}},function(err,dbRes){
+            
+            if (err) { res.send(err); }
+            else { res.send(true); }
+
+        });
     });
 }
