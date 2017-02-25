@@ -1,0 +1,21 @@
+<div class="col-xs-10 col-xs-offset-1">
+	<div class="col-xs-12">
+		<h2>Scraped Articles</h2>
+	</div>
+
+	{{#each articles}}
+
+	<div class="well col-xs-12">
+
+			<a href="{{this.link}}"><h4>{{this.title}}</h4></a>
+
+			<form class="pull-right" action="/article/{{this.id}}" method="POST">
+				<input type="hidden" name="id" value="{{this.id}}">
+				<button type="submit">SAVE</button>
+			</form>
+
+	</div>
+
+	{{/each}}
+
+</div>
