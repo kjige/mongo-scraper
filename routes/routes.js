@@ -1,5 +1,6 @@
 var request = require("request");
 var cheerio = require("cheerio");
+var mongoose = require("mongoose");
 var Article = require("../models/Article.js");
 var Note = require("../models/Note.js");
 
@@ -92,19 +93,18 @@ module.exports = function(app) {
     });
 
     app.post("/notes/:id", function(req,res){
-            
-                    Article.findOneAndUpdate({"_id": req.params.id}, 
-                        
-                        { $push: { 'notes': req.body.notesBody } }, 
-                        
-                        function(error) {
-                        
-                        if (error) {console.log(error);} 
-                        else {res.send(true);}
+                       
+        var newNote = {
+            noteId: mongoose.Types.ObjectId(),
+            noteBody: req.body.notesBody
+        };
 
-                    });
-                // }
-            // });
+        Article.findOneAndUpdate({"_id": req.params.id}, { $push: { 'notes': newNote } }, function(error) {
+            
+            if (error) {console.log(error);} 
+            else {res.send(true);}
+
+        });
     });
 
     app.put("/saved/remove/:id", function(req,res){
@@ -117,9 +117,9 @@ module.exports = function(app) {
         });
     });
 
-    app.put("/note/remove/:id/:note", function(req,res){
-        console.log("COMMENT "+req.params.note);
-        Article.update({"_id":req.params.id}, {$pull: {'notes': {$in: [req.params.note]}}},function(err,dbRes){
+    app.put("/note/remove/:id/:noteId", function(req,res){
+        console.log("COMMENT "+req.params.noteId);
+        Article.update({"_id":req.params.id}, {$pull: {'notes': {noteId: req.params.noteId}}}, function(err,dbRes){
             
             if (err) { res.send(err); }
             else { res.send(true); }

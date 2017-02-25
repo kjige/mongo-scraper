@@ -28,11 +28,10 @@ $(document).ready(function(){
                     data.notes.map(function(note, i){
                     
                         // Display previous notes with delete button
-                        $(".notes").append("<div class='row form-inline'>" + note + "<button data-note="+note+" data-Id="+thisId+" class='btn btn-danger btn-sm pull-right delete-note'>Delete</button></div>");
+                        $(".notes").append("<div class='row form-inline'>" + note.noteBody + "<button data-noteId=" + note.noteId + " data-Id=" + thisId + " class='btn btn-danger btn-sm pull-right delete-note'>Delete</button></div>");
 
                     });
                 }
-
 
                 // A textarea to add a new note body
                 $(".notes").append("<textarea id='bodyinput' name='body'></textarea>");
@@ -95,12 +94,12 @@ $(document).ready(function(){
          $(document).on("click", ".delete-note", function(){
 
             var thisId = $(this).attr("data-Id");
-            var note = $(this).attr("data-note");
+            var noteId = $(this).attr("data-noteId");
             
             $.ajax({
                 
                 method: "PUT",
-                url: "/note/remove/" + thisId + "/" + note
+                url: "/note/remove/" + thisId + "/" + noteId
             
             }).done(function(data) {
                 
