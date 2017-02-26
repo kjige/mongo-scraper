@@ -7,6 +7,6 @@ var NoteSchema = new Schema({
     // noteDate: {type: Date, default: Date.now}
 });
 
-var Note = mongoose.model('Notes', NoteSchema);
+var Note = mongoose.model('Note', NoteSchema);
 
 module.exports = Note;

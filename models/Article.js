@@ -6,8 +6,7 @@ var ArticleSchema = new Schema({
     title: {type: String, required: true},
     link: {type: String, required: true},
     saved: {Boolean, default: false},
-    // notes:[{type: Schema.Types.ObjectId, ref: 'Notes'}]
-    notes:[]
+    notes: [{type: Schema.Types.ObjectId, ref: 'Note'}]
 });
 
 

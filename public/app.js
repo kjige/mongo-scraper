@@ -17,18 +17,16 @@ $(document).ready(function(){
             // With that done, add the note information to the page
             .done(function(data) {
 
-                // console.log("HERE " + JSON.stringify(data));
-         
                 // The title of the article
-                $(".notes").append("<h4>" + data.title + "</h4>");
+                $(".notes").append("<h4>" + data[0].title + "</h4>");
             
+                console.log("DATA " + JSON.stringify(data));
                 // If there's a note in the article
-                if (data.notes.length > 0) {
-
-                    data.notes.map(function(note, i){
+                if (data[0].notes.length > 0) {
+                    data[0].notes.map(function(note, i){
                     
                         // Display previous notes with delete button
-                        $(".notes").append("<div class='row form-inline'>" + note.noteBody + "<button data-noteId=" + note.noteId + " data-Id=" + thisId + " class='btn btn-danger btn-sm pull-right delete-note'>Delete</button></div>");
+                        $(".notes").append("<div class='row col-xs-11 form-inline'>" + note.noteBody + "<button data-noteId=" + note._id + " data-Id=" + thisId + " class='btn btn-danger btn-sm pull-right delete-note'>Delete</button></div>");
 
                     });
                 }
@@ -37,7 +35,7 @@ $(document).ready(function(){
                 $(".notes").append("<textarea id='bodyinput' name='body'></textarea>");
 
                 // A button to submit a new note, with the id of the article saved to it
-                $(".notes").append("<button data-id='" + data._id + "' id='save-note' name='newnote'>Save Note</button>");
+                $(".notes").append("<button data-id='" + thisId + "' id='save-note' name='newnote'>Save Note</button>");
 
             });
         });
@@ -64,7 +62,7 @@ $(document).ready(function(){
 
                 if (data === true){
                     
-                    window.location.replace("/saved");
+                    // window.location.replace("/saved");
                     
                 } else {console.log(data);}
             });

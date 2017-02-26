@@ -48,7 +48,7 @@ module.exports = function(app) {
 
             // render result to DOM
             res.render("scrapings", {articles: scrapings});
-            console.log(scrapings);
+
         });
     });
 
@@ -56,12 +56,10 @@ module.exports = function(app) {
         
         var id = req.params.id;
         
-        console.log(req.body);
-        
-        var entry = new Article(scrapings[id]);
+        var entry = scrapings[id];
 
-        entry.save(function(err, doc){
-            if(err){console.log(err);}
+        Article.create(entry, function (err) {
+            if (err) {console.log(err);}
         });
         
         res.redirect("/saved");
@@ -71,19 +69,19 @@ module.exports = function(app) {
 
         Article.find({}, function(err, savedArticles){
 
-            console.log(savedArticles);
-
             res.render("saved", {articles: savedArticles}); 
         });
     });
 
     app.get("/notes/:id", function(req,res){
 
-        Article.findOne({ "_id": req.params.id })
+        Article.find({ "_id": req.params.id })
+
+        .populate("notes")
 
         // now, execute our query
         .exec(function(error, doc) {
-            
+            console.log("DOC "+doc);
             // Log any errors
             if (error) {console.log(error);}
             
@@ -93,17 +91,18 @@ module.exports = function(app) {
     });
 
     app.post("/notes/:id", function(req,res){
-                       
-        var newNote = {
-            noteId: mongoose.Types.ObjectId(),
-            noteBody: req.body.notesBody
-        };
 
-        Article.findOneAndUpdate({"_id": req.params.id}, { $push: { 'notes': newNote } }, function(error) {
+        Note.create({noteBody: req.body.notesBody}, function(error, note){
+
+            if(error) {console.log(error);}
             
-            if (error) {console.log(error);} 
-            else {res.send(true);}
+            else { Article.findOneAndUpdate({_id: req.params.id}, { $push: { 'notes': note._id } }, { new: true }, function(err) {
 
+                    if(err) {console.log(err);}
+                    
+                    else {res.send(true);}
+                });
+            }
         });
     });
 
@@ -119,7 +118,8 @@ module.exports = function(app) {
 
     app.put("/note/remove/:id/:noteId", function(req,res){
         console.log("COMMENT "+req.params.noteId);
-        Article.update({"_id":req.params.id}, {$pull: {'notes': {noteId: req.params.noteId}}}, function(err,dbRes){
+        var num = parseInt(req.params.noteId);
+        Article.update({"_id":req.params.id}, {$pull: {'notes': {noteId: num}}}, function(err,dbRes){
             
             if (err) { res.send(err); }
             else { res.send(true); }
