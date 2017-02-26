@@ -34,14 +34,14 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 // connect to mongodb
-var connectionString;
-if (process.env.PORT) {
-    connectionString = 'mongodb://heroku_xnm40xhc:lacfnre3jrcmddqh4o1c58j56e@ds161059.mlab.com:61059/heroku_xnm40xhc';
-} else {
-    connectionString = 'mongodb://localhost/';
-}
+// var connectionString;
+// if (process.env.PORT) {
+//     connectionString = 'mongodb://heroku_xnm40xhc:lacfnre3jrcmddqh4o1c58j56e@ds161059.mlab.com:61059/heroku_xnm40xhc';
+// } else {
+//     connectionString = 'mongodb://localhost/';
+// }
 
-mongoose.connect(connectionString);
+mongoose.connect('mongodb://heroku_xnm40xhc:lacfnre3jrcmddqh4o1c58j56e@ds161059.mlab.com:61059/heroku_xnm40xhc');
 
 var db = mongoose.connection;
 
