@@ -111,6 +111,7 @@ module.exports = function(app) {
         Article.remove({"_id":req.params.id}, function(err,dbRes){
             
             if (err) { res.send(err); }
+
             else { res.send(true); }
 
         });
@@ -118,12 +119,12 @@ module.exports = function(app) {
 
     app.put("/note/remove/:id/:noteId", function(req,res){
         console.log("COMMENT "+req.params.noteId);
-        var num = parseInt(req.params.noteId);
-        Article.update({"_id":req.params.id}, {$pull: {'notes': {noteId: num}}}, function(err,dbRes){
-            
-            if (err) { res.send(err); }
-            else { res.send(true); }
 
+        Note.remove({ _id: req.params.noteId }, function(error, note) {
+            
+            if (error) {res.send(error);} 
+            
+            else {res.send(true);}
         });
     });
 }

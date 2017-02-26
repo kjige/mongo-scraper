@@ -20,7 +20,6 @@ $(document).ready(function(){
                 // The title of the article
                 $(".notes").append("<h4>" + data[0].title + "</h4>");
             
-                console.log("DATA " + JSON.stringify(data));
                 // If there's a note in the article
                 if (data[0].notes.length > 0) {
                     data[0].notes.map(function(note, i){
@@ -32,7 +31,7 @@ $(document).ready(function(){
                 }
 
                 // A textarea to add a new note body
-                $(".notes").append("<textarea id='bodyinput' name='body'></textarea>");
+                $(".notes").append("<textarea id='bodyinput' name='body' placeholder='Write a new note...' cols='50'></textarea>");
 
                 // A button to submit a new note, with the id of the article saved to it
                 $(".notes").append("<button data-id='" + thisId + "' id='save-note' name='newnote'>Save Note</button>");
@@ -62,7 +61,7 @@ $(document).ready(function(){
 
                 if (data === true){
                     
-                    // window.location.replace("/saved");
+                    window.location.replace("/saved");
                     
                 } else {console.log(data);}
             });
@@ -100,12 +99,8 @@ $(document).ready(function(){
                 url: "/note/remove/" + thisId + "/" + noteId
             
             }).done(function(data) {
-                
-                if (data===true){ 
-                    
+
                     window.location.replace("/saved");
-                
-                } else { console.log(data); }
             
             });
         });
