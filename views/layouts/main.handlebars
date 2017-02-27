@@ -13,11 +13,33 @@
 
 </head>
 <body>
-    <div class="text-center">
-        <div class="jumbotron">
+    <div class="jumbotron">
+        <div class="text-center">
+            
             <h1>Mongo News Scraper</h1>
+            
             <h3>Scrape the latest news from ycombinator</h3>
+        
         </div>
+
+        <div class="col-xs-3 col-xs-offset-3">
+        
+            <form class="pull-right" action="/" method="GET">
+                <button type="submit" class="btn btn-sm btn-warning">SCRAPE</button>
+            </form>
+        
+        </div>
+
+        <div class="col-xs-3">
+
+            <form action="/saved" method="GET">
+                <button type="submit" class="btn btn-sm btn-success">SAVED ARTICLES</button>
+            </form>
+        
+        </div>    
+
+        </div>
+
         <hr />
     </div>
 	<div class="container">

@@ -36,14 +36,19 @@ module.exports = function(app) {
 
             // remove empty objects in scrapings
             scrapings.map(function(elem){
+
                 if (!elem.title || !elem.link) {
+
                     scrapings.splice(scrapings.indexOf(elem), 1);
+
                 }
             });
 
             // assign id after removing blank objects
             scrapings.map(function(elem){
+
                 elem.id = scrapings.indexOf(elem);
+
             });
 
             // render result to DOM
@@ -52,19 +57,25 @@ module.exports = function(app) {
         });
     });
 
+    // route for saving an article
     app.post("/article/:id", function(req,res){
         
         var id = req.params.id;
         
         var entry = scrapings[id];
 
-        Article.create(entry, function (err) {
-            if (err) {console.log(err);}
+        // Article.create(entry, function (err) {
+        //     if (err) {console.log(err);}
+        // });
+
+        Article.findOneAndUpdate({title: entry.title}, entry, {upsert:true}, function(err, doc) {
+            if (err) { console.log(err); }
         });
         
         res.redirect("/saved");
     });
 
+    // route to get all previously saved articles
     app.get("/saved", function(req,res){
 
         Article.find({}, function(err, savedArticles){
@@ -73,23 +84,22 @@ module.exports = function(app) {
         });
     });
 
+    // get previously saved notes for specific saved article
     app.get("/notes/:id", function(req,res){
 
         Article.find({ "_id": req.params.id })
 
         .populate("notes")
 
-        // now, execute our query
         .exec(function(error, doc) {
-            console.log("DOC "+doc);
-            // Log any errors
+
             if (error) {console.log(error);}
             
-            // Otherwise, send the doc to the browser as a json object
             else {res.send(doc);}
         });
     });
 
+    // route to save new note for a specific saved article
     app.post("/notes/:id", function(req,res){
 
         Note.create({noteBody: req.body.notesBody}, function(error, note){
